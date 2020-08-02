@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-BUCK_HOME=${BASH_SOURCE%/*}
+BUCK_HOME=$(dirname "$(realpath $0)")
 
 export JAVA_HOME="$BUCK_HOME/jre";
 
