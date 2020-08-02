@@ -19,33 +19,23 @@ http_file(
 )
 
 http_archive(
-  name = 'openjdk8-linux',
-  out = 'out',
-  urls = [
-    'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u202-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u202b08.tar.gz',
-  ],
-  sha256 = 'f5a1c9836beb3ca933ec3b1d39568ecbb68bd7e7ca6a9989a21ff16a74d910ab',
-  strip_prefix = 'jdk8u202-b08',
-)
-
-http_archive(
   name = 'openjre8-linux',
   out = 'out',
   urls = [
-    'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u202-b08/OpenJDK8U-jre_x64_linux_hotspot_8u202b08.tar.gz',
+    'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u265-b01/OpenJDK8U-jre_x64_linux_hotspot_8u265b01.tar.gz',
   ],
-  sha256 = 'b3f9934c6fc83fb2e76a4ded31367e5312013e27d36eac82a6fe1423aae394ce',
-  strip_prefix = 'jdk8u202-b08-jre',
+  sha256 = '9bce39f63d24626da75778f240294fa466a0ed117e32db798164621fe30b0723',
+  strip_prefix = 'jdk8u265-b01-jre',
 )
 
 http_archive(
   name = 'openjre8-windows',
   out = 'out',
   urls = [
-    'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u202-b08/OpenJDK8U-jre_x64_windows_hotspot_8u202b08.zip',
+    'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u265-b01/OpenJDK8U-jre_x64_windows_hotspot_8u265b01.zip',
   ],
-  sha256 = '6689bc1d726969e95976c7d8f6ae1730abcb31d2d0c3e2d1489a0bacd7867ab7',
-  strip_prefix = 'jdk8u202-b08-jre',
+  sha256 = 'ac9b2005c3a2efe6aecbacdb30ceb5a85bdf1a487e112d622af942f1000f4a27',
+  strip_prefix = 'jdk8u265-b01-jre',
 )
 
 http_file(
@@ -78,19 +68,19 @@ http_archive(
 
 
 http_archive(
-  name = 'buck-bottle-2019.01.10.01',
+  name = 'buck-bottle-2020.06.29.01',
   out = 'out',
   type = 'tar.gz',
   urls = [
-    'https://github.com/facebook/buck/releases/download/v2019.01.10.01/buck-2019.01.10.01.yosemite.bottle.tar.gz',
+    'https://github.com/facebook/buck/releases/download/v2020.06.29.01/buck-2020.06.29.01.yosemite.bottle.tar.gz',
   ],
-  sha256 = '8663afcd14676b6cb45995a2fe892664dbc90a7aff2ac9eaa51db983795f2015',
-  strip_prefix = 'buck/2019.01.10.01',
+  sha256 = 'c8d295aa5e603d4bd9e4c4fcc99be002b33f6dc9df4169c342f4cd87ffb41fc2',
+  strip_prefix = 'buck/2020.06.29.01',
 )
 
 genrule(
-  name = 'buck-2019.01.10.01-linux',
-  out = 'buck-2019.01.10.01-linux',
+  name = 'buck-2020.06.29.01-linux',
+  out = 'buck-2020.06.29.01-linux',
   executable = True,
   srcs = [
     'buck.sh',
@@ -113,15 +103,15 @@ genrule(
     'cp $SRCDIR/buck.sh ./bundle/buck.sh',
     'cp -r $(location :openjre8-linux) ./bundle/jre',
     'cp -r ./python2 ./bundle',
-    'cp -r $(location :buck-bottle-2019.01.10.01)/bin/buck ./bundle/bin/buck',
+    'cp -r $(location :buck-bottle-2020.06.29.01)/bin/buck ./bundle/bin/buck',
     'chmod +x ./bundle/buck.sh',
     '$(exe :warp-linux) -a linux-x64 -e buck.sh -i ./bundle -o $OUT',
   ]),
 )
 
 genrule(
-  name = 'buck-2019.01.10.01-windows',
-  out = 'buck-2019.01.10.01-windows.exe',
+  name = 'buck-2020.06.29.01-windows',
+  out = 'buck-2020.06.29.01-windows.exe',
   executable = True,
   srcs = [
     'buck.bat',
@@ -135,7 +125,7 @@ genrule(
     'mkdir "bundle\\python2"',
     'msiexec /a $(location :python2-windows) targetdir="$TMP\\bundle\\python2" /qn',
     'mkdir "bundle\\bin"',
-    'copy /y $(location :buck-bottle-2019.01.10.01)\\bin\\buck bundle\\bin\\buck',
+    'copy /y $(location :buck-bottle-2020.06.29.01)\\bin\\buck bundle\\bin\\buck',
     '$(exe :warp-windows) -a windows-x64 -e buck.bat -i ./bundle -o $OUT',
   ]),
 )

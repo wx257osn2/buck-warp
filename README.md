@@ -7,5 +7,5 @@ You can download a self-contained version of Buck from the [releases page](https
 ## Development
 
 ```bash
-buck run //:buck-2019.01.10.01-linux
+buck run //:buck-2020.06.29.01-linux
 ```
