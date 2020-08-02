@@ -145,10 +145,11 @@ genrule(
   ],
   cmd_exe = ' & '.join([
     'cd $TMP',
-    'mkdir "bundle/bin"',
-    'cp $SRCDIR/buck.bat ./bundle/buck.bat',
-    'cp -r $(location :openjre8-windows) ./bundle/jre',
-    'cp -r $(location :buck-bottle-2019.01.10.01)/bin/buck ./bundle/bin/buck',
+    'copy $SRCDIR\\buck.bat bundle\\buck.bat',
+    'mkdir "bundle\\jre"',
+    'xcopy /e $(location :openjre8-windows) bundle\\jre',
+    'mkdir "bundle\\bin"',
+    'copy $(location :buck-bottle-2019.01.10.01)\\bin\\buck bundle\\bin\\buck',
     '$(exe :warp-windows) -a windows-x64 -e buck.bat -i ./bundle -o $OUT',
   ]),
 )
