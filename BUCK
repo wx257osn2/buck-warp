@@ -86,6 +86,26 @@ http_file(
   sha256 = 'b74a3afa1e0bf2a6fc566a7b70d15c9bfabba3756fb077797d16fffa27800c05',
 )
 
+http_archive(
+  name = 'zlib-src',
+  out = 'out',
+  urls = [
+    'https://zlib.net/zlib-1.2.11.tar.xz',
+  ],
+  sha256 = '4ff941449631ace0d4d203e3483be9dbc9da454084111f97ea0a2114e19bf066',
+  strip_prefix = 'zlib-1.2.11',
+)
+
+http_archive(
+  name = 'python2-src',
+  out = 'out',
+  urls = [
+    'https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tar.xz',
+  ],
+  sha256 = 'b62c0e7937551d0cc02b8fd5cb0f544f9405bafc9a54d3808ed4594812edef43',
+  strip_prefix = 'Python-2.7.18',
+)
+
 
 http_archive(
   name = 'buck-bottle-2019.01.10.01',
