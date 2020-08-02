@@ -145,13 +145,14 @@ genrule(
   ],
   cmd_exe = ' & '.join([
     'cd $TMP',
-    'copy $SRCDIR\\buck.bat bundle\\buck.bat',
+    'mkdir bundle',
+    'copy /y $SRCDIR\\buck.bat bundle\\buck.bat',
     'mkdir "bundle\\jre"',
-    'xcopy /e $(location :openjre8-windows) bundle\\jre',
+    'xcopy /y /e $(location :openjre8-windows) bundle\\jre',
     'mkdir "bundle\\python2"',
     'msiexec /a $(location :python2-windows) targetdir="$TMP\\bundle\\python2" /qn',
     'mkdir "bundle\\bin"',
-    'copy $(location :buck-bottle-2019.01.10.01)\\bin\\buck bundle\\bin\\buck',
+    'copy /y $(location :buck-bottle-2019.01.10.01)\\bin\\buck bundle\\bin\\buck',
     '$(exe :warp-windows) -a windows-x64 -e buck.bat -i ./bundle -o $OUT',
   ]),
 )
