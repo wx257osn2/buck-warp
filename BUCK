@@ -78,6 +78,14 @@ http_archive(
   strip_prefix = 'jdk8u202-b08-jre',
 )
 
+http_file(
+  name = 'python2-windows',
+  urls = [
+    'https://www.python.org/ftp/python/2.7.18/python-2.7.18.amd64.msi',
+  ],
+  sha256 = 'b74a3afa1e0bf2a6fc566a7b70d15c9bfabba3756fb077797d16fffa27800c05',
+)
+
 
 http_archive(
   name = 'buck-bottle-2019.01.10.01',
@@ -135,21 +143,15 @@ genrule(
   srcs = [
     'buck.bat',
   ],
-  cmd = ' && '.join([
-    'cd $TMP',
-    'mkdir -p bundle',
-    'mkdir -p bundle/bin',
-    'cp $SRCDIR/buck.bat ./bundle/buck.bat',
-    'cp -r $(location :openjre8-windows) ./bundle/jre',
-    'cp -r $(location :buck-bottle-2019.01.10.01)/bin/buck ./bundle/bin/buck',
-    '$(exe :warp-windows) -a windows-x64 -e buck.bat -i ./bundle -o $OUT',
-  ]),
   cmd_exe = ' & '.join([
     'cd $TMP',
-    'mkdir "bundle/bin"',
-    'cp $SRCDIR/buck.bat ./bundle/buck.bat',
-    'cp -r $(location :openjre8-windows) ./bundle/jre',
-    'cp -r $(location :buck-bottle-2019.01.10.01)/bin/buck ./bundle/bin/buck',
+    'copy $SRCDIR\\buck.bat bundle\\buck.bat',
+    'mkdir "bundle\\jre"',
+    'xcopy /e $(location :openjre8-windows) bundle\\jre',
+    'mkdir "bundle\\python2"',
+    'msiexec /a $(location :python2-windows) targetdir="$TMP\\bundle\\python2" /qn',
+    'mkdir "bundle\\bin"',
+    'copy $(location :buck-bottle-2019.01.10.01)\\bin\\buck bundle\\bin\\buck',
     '$(exe :warp-windows) -a windows-x64 -e buck.bat -i ./bundle -o $OUT',
   ]),
 )
