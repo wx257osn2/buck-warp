@@ -78,6 +78,14 @@ http_archive(
   strip_prefix = 'jdk8u202-b08-jre',
 )
 
+http_file(
+  name = 'python2-windows',
+  urls = [
+    'https://www.python.org/ftp/python/2.7.18/python-2.7.18.amd64.msi',
+  ],
+  sha256 = 'b74a3afa1e0bf2a6fc566a7b70d15c9bfabba3756fb077797d16fffa27800c05',
+)
+
 
 http_archive(
   name = 'buck-bottle-2019.01.10.01',
