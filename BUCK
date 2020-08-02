@@ -145,6 +145,7 @@ genrule(
   ],
   cmd_exe = ' & '.join([
     'cd $TMP',
+    'mkdir bundle',
     'copy $SRCDIR\\buck.bat bundle\\buck.bat',
     'mkdir "bundle\\jre"',
     'xcopy /e $(location :openjre8-windows) bundle\\jre',
