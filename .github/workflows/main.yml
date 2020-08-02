@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: get pre-built binary
+      run: |
+        wget https://github.com/wx257osn2/buck-warp/releases/download/v0.4.0a/buck-2019.01.10.01-linux -O buck
+        chmod +x buck
+
+    - name: build
+      run: ./buck run //:buck-2019.01.10.01-linux || if [ -e buck-out/gen/buck-2019.01.10.01-linux/buck-2019.01.10.01-linux ]; then exit 0; else exit 1; fi
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: buck-2019.01.10.01-linux
+        path: buck-out/gen/buck-2019.01.10.01-linux/buck-2019.01.10.01-linux
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: get pre-built binary
+      run: (New-Object System.Net.WebClient).DownloadFile("https://github.com/wx257osn2/buck-warp/releases/download/v0.4.0a/buck-2019.01.10.01-windows.exe",  "./buck.exe")
+
+    - name: build
+      run: |
+        $proc = Start-Process -FilePath "./buck.exe" -ArgumentList "run //:buck-2019.01.10.01-windows" -Wait -PassThru -NoNewWindow
+        if(Test-Path "buck-out/gen/buck-2019.01.10.01-windows/buck-2019.01.10.01-windows.exe"){
+          exit 0
+        }
+        else{
+          exit 1
+        }
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: buck-2019.01.10.01-windows.exe
+        path: buck-out/gen/buck-2019.01.10.01-windows/buck-2019.01.10.01-windows.exe
