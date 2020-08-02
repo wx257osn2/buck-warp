@@ -22,20 +22,20 @@ http_archive(
   name = 'openjre8-linux',
   out = 'out',
   urls = [
-    'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u202-b08/OpenJDK8U-jre_x64_linux_hotspot_8u202b08.tar.gz',
+    'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u265-b01/OpenJDK8U-jre_x64_linux_hotspot_8u265b01.tar.gz',
   ],
-  sha256 = 'b3f9934c6fc83fb2e76a4ded31367e5312013e27d36eac82a6fe1423aae394ce',
-  strip_prefix = 'jdk8u202-b08-jre',
+  sha256 = '9bce39f63d24626da75778f240294fa466a0ed117e32db798164621fe30b0723',
+  strip_prefix = 'jdk8u265-b01-jre',
 )
 
 http_archive(
   name = 'openjre8-windows',
   out = 'out',
   urls = [
-    'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u202-b08/OpenJDK8U-jre_x64_windows_hotspot_8u202b08.zip',
+    'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u265-b01/OpenJDK8U-jre_x64_windows_hotspot_8u265b01.zip',
   ],
-  sha256 = '6689bc1d726969e95976c7d8f6ae1730abcb31d2d0c3e2d1489a0bacd7867ab7',
-  strip_prefix = 'jdk8u202-b08-jre',
+  sha256 = 'ac9b2005c3a2efe6aecbacdb30ceb5a85bdf1a487e112d622af942f1000f4a27',
+  strip_prefix = 'jdk8u265-b01-jre',
 )
 
 http_file(
