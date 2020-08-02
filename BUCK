@@ -19,16 +19,6 @@ http_file(
 )
 
 http_archive(
-  name = 'openjdk8-linux',
-  out = 'out',
-  urls = [
-    'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u202-b08/OpenJDK8U-jdk_x64_linux_hotspot_8u202b08.tar.gz',
-  ],
-  sha256 = 'f5a1c9836beb3ca933ec3b1d39568ecbb68bd7e7ca6a9989a21ff16a74d910ab',
-  strip_prefix = 'jdk8u202-b08',
-)
-
-http_archive(
   name = 'openjre8-linux',
   out = 'out',
   urls = [
