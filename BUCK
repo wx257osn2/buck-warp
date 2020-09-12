@@ -38,33 +38,32 @@ http_archive(
   strip_prefix = 'jdk8u265-b01-jre',
 )
 
-http_archive(
-  name = 'python3-windows',
-  out = 'out',
+http_file(
+  name = 'python2-windows',
   urls = [
-    'https://www.python.org/ftp/python/3.8.5/python-3.8.5-embed-amd64.zip',
+    'https://www.python.org/ftp/python/2.7.18/python-2.7.18.amd64.msi',
   ],
-  sha256 = 'de59a3544c17dd091c08a6a061fb2660d3bdbd667ed6617b01189a86c18ac2c0',
+  sha256 = 'b74a3afa1e0bf2a6fc566a7b70d15c9bfabba3756fb077797d16fffa27800c05',
 )
 
 http_archive(
-  name = 'libffi-src',
+  name = 'zlib-src',
   out = 'out',
   urls = [
-    'https://github.com/libffi/libffi/releases/download/v3.3/libffi-3.3.tar.gz',
+    'https://zlib.net/zlib-1.2.11.tar.xz',
   ],
-  sha256 = '72fba7922703ddfa7a028d513ac15a85c8d54c8d67f55fa5a4802885dc652056',
-  strip_prefix = 'libffi-3.3',
+  sha256 = '4ff941449631ace0d4d203e3483be9dbc9da454084111f97ea0a2114e19bf066',
+  strip_prefix = 'zlib-1.2.11',
 )
 
 http_archive(
-  name = 'python3-src',
+  name = 'python2-src',
   out = 'out',
   urls = [
-    'https://www.python.org/ftp/python/3.8.5/Python-3.8.5.tar.xz',
+    'https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tar.xz',
   ],
-  sha256 = 'e3003ed57db17e617acb382b0cade29a248c6026b1bd8aad1f976e9af66a83b0',
-  strip_prefix = 'Python-3.8.5',
+  sha256 = 'b62c0e7937551d0cc02b8fd5cb0f544f9405bafc9a54d3808ed4594812edef43',
+  strip_prefix = 'Python-2.7.18',
 )
 
 
@@ -91,19 +90,19 @@ genrule(
     'mkdir -p bundle',
     'mkdir -p bundle/bin',
     'mkdir -p build',
-    'mkdir -p build/libffi',
-    'pushd build/libffi',
-    '$(location :libffi-src)/configure --prefix="$TMP/libffi"',
+    'mkdir -p build/zlib',
+    'pushd build/zlib',
+    '$(location :zlib-src)/configure --prefix="$TMP/zlib"',
     'make install -j',
     'popd',
     'mkdir -p build/python',
     'pushd build/python',
-    'LIBFFI_INCLUDEDIR=$TMP/libffi/include PKG_CONFIG_PATH=$TMP/libffi/lib/pkgconfig/ LDFLAGS="-L $TMP/libffi/lib/" $(location :python3-src)/configure --prefix="$TMP/python3" --enable-optimizations',
+    'C_INCLUDE_PATH="$TMP/zlib/include":$C_INCLUDE_PATH LIBRARY_PATH="$TMP/zlib/lib":$LIBRARY_PATH $(location :python2-src)/configure --prefix="$TMP/python2" --enable-optimizations',
     'make install -j',
     'popd',
     'cp $SRCDIR/buck.sh ./bundle/buck.sh',
     'cp -r $(location :openjre8-linux) ./bundle/jre',
-    'cp -r ./python3 ./bundle',
+    'cp -r ./python2 ./bundle',
     'cp -r $(location :buck-bottle-2020.06.29.01)/bin/buck ./bundle/bin/buck',
     'chmod +x ./bundle/buck.sh',
     '$(exe :warp-linux) -a linux-x64 -e buck.sh -i ./bundle -o $OUT',
@@ -116,7 +115,6 @@ genrule(
   executable = True,
   srcs = [
     'buck.bat',
-    'python38._pth',
   ],
   cmd_exe = ' & '.join([
     'cd $TMP',
@@ -124,9 +122,8 @@ genrule(
     'copy /y $SRCDIR\\buck.bat bundle\\buck.bat',
     'mkdir "bundle\\jre"',
     'xcopy /y /e $(location :openjre8-windows) bundle\\jre',
-    'mkdir "bundle\\python3"',
-    'xcopy /y /e $(location :python3-windows) bundle\\python3',
-    'copy /y "$SRCDIR\\python38._pth" bundle\\python3\\',
+    'mkdir "bundle\\python2"',
+    'msiexec /a $(location :python2-windows) targetdir="$TMP\\bundle\\python2" /qn',
     'mkdir "bundle\\bin"',
     'copy /y $(location :buck-bottle-2020.06.29.01)\\bin\\buck bundle\\bin\\buck',
     '$(exe :warp-windows) -a windows-x64 -e buck.bat -i ./bundle -o $OUT',
