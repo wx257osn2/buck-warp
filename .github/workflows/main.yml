@@ -19,7 +19,7 @@ jobs:
         chmod +x buck
 
     - name: build
-      run: ./buck run //:buck-2020.06.29.01-linux || if [ -e buck-out/gen/buck-2020.06.29.01-linux/buck-2020.06.29.01-linux ]; then exit 0; else exit 1; fi
+      run: ./buck run //:buck-2020.06.29.01-linux || if [ -e buck-out/gen/buck-2020.06.29.01-linux/buck-2020.06.29.01-linux ]; then sha256sum buck-out/gen/buck-2020.06.29.01-linux/buck-2020.06.29.01-linux && exit 0; else exit 1; fi
 
     - uses: actions/upload-artifact@v2
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
@@ -41,6 +41,7 @@ jobs:
       run: |
         $proc = Start-Process -FilePath "./buck.exe" -ArgumentList "run //:buck-2020.06.29.01-windows" -Wait -PassThru -NoNewWindow
         if(Test-Path "buck-out/gen/buck-2020.06.29.01-windows/buck-2020.06.29.01-windows.exe"){
+          Get-FileHash buck-out/gen/buck-2020.06.29.01-windows/buck-2020.06.29.01-windows.exe
           exit 0
         }
         else{
